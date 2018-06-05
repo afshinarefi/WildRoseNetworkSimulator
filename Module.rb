@@ -1,13 +1,32 @@
-class Module
+###############################################################################
+# Author: Afshin Arefi
+#
+# Licence: GPL
+###############################################################################
 
+class Module
+  
+  include Comparable
+
+  @@nextID=0
   @eventController=nil
   @times=[]
   @outputs=[]
   @buffers=[]
   @ios=[]
 
+  def <=> (item)
+    self.id <=> item.id
+  end
+
+  def id
+    @id
+  end
+
   def initialize eventController
     @eventController=eventController
+    @id=@@nextID
+    @@nextID+=1
   end
 
   def addIO io
@@ -15,6 +34,7 @@ class Module
     @outputs.push nil
     @buffers.push []
     @ios.push io
+    return @ios.size-1
   end
 
   def time packet
