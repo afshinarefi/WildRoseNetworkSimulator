@@ -17,7 +17,8 @@ class Module
     @ios.push io
   end
 
-  def time
+  def time packet
+    return 0
   end
 
   def receive packet, io

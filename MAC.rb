@@ -1,5 +1,11 @@
 class MAC < Address
-  @@currentAddress=1
+  @currentAddress=1
+
+  def getAddress
+    address=@currentAddress
+    @currentAddress+=1
+    return format address
+  end
 
   def format number
     bytes=[]
