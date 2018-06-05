@@ -20,5 +20,15 @@ class Link < PipeModule
   def time packet
     return (packet[:dataSize]/bandwidth)+delay
   end
+
+  def connectCableX io
+    connectX io
+    io.connectCable self
+  end
+
+  def connectCableY io
+    connectY io
+    io.connectCable self
+  end
   
 end

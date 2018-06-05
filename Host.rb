@@ -2,7 +2,6 @@ require_relative 'NetworkInterfaceCard'
 require_relative 'Module'
 
 class Host < Module
-  @networkInterfaceCards={}
 
   def initialize eventController
     super(eventController)
@@ -10,12 +9,15 @@ class Host < Module
 
   def newSimpleHost(eventController, speed)
     host=Host.new eventController
-    host.newNetworkInterfaceCard(speed)
+    host.addNetworkInterfaceCard(speed)
     return host
   end
 
-  def newNetworkInterfaceCard(speed)
-    nic=NetworkInterfaceCard.new(speed)
-    @networkInterfaceCards['eth%d' % [@networkInterfaceCards.size]]=nic
+  def getNIC number
+    return @ios[number]
+  end
+
+  def addNetworkInterfaceCard(speed)
+    ioNumber=addIO NetworkInterfaceCard.new speed, self
   end
 end
