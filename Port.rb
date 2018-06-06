@@ -31,4 +31,8 @@ class Port < PipeModule
     connectY io
   end
 
+  def connectCable io
+    connectDynamic io
+  end
+
 end

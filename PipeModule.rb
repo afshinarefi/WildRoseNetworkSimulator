@@ -29,5 +29,6 @@ class PipeModule < Module
     else
       @buffers[0].push packet
     end
+    @eventController.newEvent self, @eventController.now
   end
 end

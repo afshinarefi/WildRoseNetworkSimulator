@@ -18,7 +18,7 @@ class Link < PipeModule
   end
 
   def time packet
-    return (packet[:dataSize]/bandwidth)+delay
+    return (packet[:dataSize]/bandwidth.to_f)+delay
   end
 
   def connectCableX io
