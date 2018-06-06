@@ -1,4 +1,5 @@
 require_relative 'PipeModule'
+require_relative 'MAC'
 
 class Port < PipeModule
 

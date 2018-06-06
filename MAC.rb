@@ -1,5 +1,10 @@
+require_relative 'Address'
+
 class MAC < Address
-  @currentAddress=1
+  
+  def initialize
+    @currentAddress=1
+  end
 
   def getAddress
     address=@currentAddress

@@ -3,6 +3,8 @@ require_relative 'Module'
 
 class Host < Module
 
+  @services={}
+
   def initialize eventController
     super(eventController)
   end
@@ -19,5 +21,13 @@ class Host < Module
 
   def addNetworkInterfaceCard(speed)
     ioNumber=addIO NetworkInterfaceCard.new speed, self
+  end
+
+  def process packet, ioNumber
+    if ioNumber==nil
+      @buffers[0].push packet
+    else
+      @services[packet[:service]].receive packet, self
+    end
   end
 end

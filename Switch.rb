@@ -17,7 +17,11 @@ class Switch < Module
 
   def addPort name, speed
     ioNumber=addIO Port.new speed, self
-    @ioNames[ioNumber]=name
+    @ioNames[name]=ioNumber
+  end
+
+  def getPort index
+    @ios[index]
   end
 
   def process packet, ioNumber

@@ -13,6 +13,7 @@ class PipeModule < Module
 
   def getX
     @ios[0]
+  end
 
   def connectY io
     @ios[1]=io
@@ -24,9 +25,9 @@ class PipeModule < Module
 
   def process packet, ioNumber
     if ioNumber==0
-      buffers[1].push packet
+      @buffers[1].push packet
     else
-      buffers[0].push packet
+      @buffers[0].push packet
     end
   end
 end

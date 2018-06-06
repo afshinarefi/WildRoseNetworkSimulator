@@ -9,11 +9,6 @@ class Module
   include Comparable
 
   @@nextID=0
-  @eventController=nil
-  @times=[]
-  @outputs=[]
-  @buffers=[]
-  @ios=[]
 
   def <=> (item)
     self.id <=> item.id
@@ -24,6 +19,10 @@ class Module
   end
 
   def initialize eventController
+    @times=[]
+    @outputs=[]
+    @buffers=[]
+    @ios=[]
     @eventController=eventController
     @id=@@nextID
     @@nextID+=1
@@ -42,11 +41,13 @@ class Module
   end
 
   def receive packet, io
-    for i in 0...ios.size
-      if io == ios[i]
+    for i in 0...@ios.size
+      if io == @ios[i]
         process packet, i
+        return
       end
     end
+    process packet, nil
   end
 
   def process packet, ioNumber
@@ -55,12 +56,12 @@ class Module
   def notify
     for i in 0...@outputs.size
       if @outputs[i]!=nil && @times[i]==@eventController.now
-        @ios[i].receive(@outputs[i])
+        @ios[i].receive(@outputs[i],self)
         @outputs[i]=nil
       end
     end
     for i in 0...@buffers.size
-      if @outputs[i]!=nil && @buffers[i].size!=0
+      if @outputs[i]==nil && @buffers[i].size!=0
         @outputs[i]=@buffers[i].shift
         @times[i]=@eventController.now+time(@outputs[i])
         @eventController.newEvent self,@times[i]
