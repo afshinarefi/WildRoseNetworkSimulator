@@ -1,4 +1,5 @@
 require 'set'
+require_relative 'Logger'
 
 class EventController
 
@@ -6,6 +7,11 @@ class EventController
     @currentTime=0
     @mods={}
     @events=SortedSet.new
+    @logger=Logger.new
+  end
+
+  def log message
+    @logger.log now, message
   end
 
   def now

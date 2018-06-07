@@ -41,6 +41,7 @@ class Module
   end
 
   def receive packet, io
+    @eventController.log "%s%d | %s" % [self.class.name[0], @id, packet.inspect]
     for i in 0...@ios.size
       if io == @ios[i]
         process packet, i

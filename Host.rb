@@ -9,7 +9,7 @@ class Host < Module
     super(eventController)
   end
 
-  def newSimpleHost(eventController, speed)
+  def self.newSimpleHost(eventController, speed)
     host=Host.new eventController
     host.addNetworkInterfaceCard(speed)
     return host
@@ -20,14 +20,23 @@ class Host < Module
   end
 
   def addNetworkInterfaceCard(speed)
-    ioNumber=addIO NetworkInterfaceCard.new speed, self
+    nic=NetworkInterfaceCard.new @eventController, speed
+    ioNumber=addIO nic
+    nic.connectSlot self
   end
 
   def process packet, ioNumber
-    if ioNumber==nil
-      @buffers[0].push packet
-    else
-      @services[packet[:service]].receive packet, self
+    if packet.sections[:relay].has_key? getNetworkInterfaceCards[0].getMacAddress
+      for dest in packet.sections[:relay][getNetworkInterfaceCards[0].getMacAddress]
+        packet.sections[:destinationMAC]=dest
+        @buffers[0].push packet
+      end
     end
+    @eventController.newEvent self, @eventController.now
   end
+
+  def getNetworkInterfaceCards
+    @ios
+  end
+
 end

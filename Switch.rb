@@ -27,12 +27,14 @@ class Switch < Module
   end
 
   def process packet, ioNumber
-    @addressResolutionTable[packet[:sourceMAC]]=ioNumber
-    if @addressResolutionTable.has_key? packet[:destinationMAC]
-      @buffers[@addressResolutionTable[packet[:destinationMAC]]].push packet
+    @addressResolutionTable[packet.sections[:sourceMAC]]=ioNumber
+    if @addressResolutionTable.has_key? packet.sections[:destinationMAC]
+      @buffers[@addressResolutionTable[packet.sections[:destinationMAC]]].push packet
     else
-      for buffer in @buffers
-        buffer.push packet
+      for buffer in 0...@buffers.size
+        if buffer!=ioNumber
+          @buffers[buffer].push packet
+        end
       end
     end
     @eventController.newEvent self,@eventController.now

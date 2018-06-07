@@ -9,7 +9,7 @@ class NetworkInterfaceCard < PipeModule
 
   def process packet, ioNumber
     if ioNumber==0
-      packet[:sourceMAC]=getMacAddress
+      packet.sections[:sourceMAC]=getMacAddress
       @buffers[1].push packet
     else
       @buffers[0].push packet
@@ -23,7 +23,6 @@ class NetworkInterfaceCard < PipeModule
 
   def connectSlot io
     connectX io
-    io.connectY self
   end
 
   def getSlot
