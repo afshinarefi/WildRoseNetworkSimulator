@@ -2,23 +2,19 @@ require_relative 'Module'
 
 class NetworkInterfaceCard < PipeModule
 
-  @macAddress=""
-  @owner=nil
-
-  def initialize eventcontroller, speed, owner
+  def initialize eventcontroller, speed
     super(eventcontroller)
-    @owner=owner
-    connectPort Port.new eventcontroller, speed, self
-    connectSlot owner
+    connectPort Port.new eventcontroller, speed
   end
 
   def process packet, ioNumber
     if ioNumber==0
       packet[:sourceMAC]=getMacAddress
-      buffers[1].push packet
+      @buffers[1].push packet
     else
-      buffers[0].push packet
+      @buffers[0].push packet
     end
+    @eventController.newEvent self, @eventController.now
   end
 
   def getMacAddress
@@ -27,6 +23,7 @@ class NetworkInterfaceCard < PipeModule
 
   def connectSlot io
     connectX io
+    io.connectY self
   end
 
   def getSlot
@@ -35,6 +32,7 @@ class NetworkInterfaceCard < PipeModule
 
   def connectPort io
     connectY io
+    io.connectX self
   end
 
   def getPort

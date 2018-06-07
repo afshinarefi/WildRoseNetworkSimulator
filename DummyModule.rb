@@ -1,8 +1,14 @@
-require_relative 'Module'
+require_relative 'PipeModule'
 
-class DummyModule < Module
+class DummyModule < PipeModule
+
+  def initialize eventController, name
+    super(eventController)
+    @name=name
+  end
+
   def process packet, ioNumber
-    print "Packet Received at #{@eventController.now}: "
+    print "Packet Received at #{@eventController.now} by #{@name}: "
     print packet
     puts
   end

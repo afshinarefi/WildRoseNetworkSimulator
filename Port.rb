@@ -6,12 +6,10 @@ class Port < PipeModule
   @@macFactory=MAC.new
   @macAddress=nil
   @bandwidth=0
-  @owner=nil
   
-  def initialize eventcontroller , bandwidth, owner
+  def initialize eventcontroller , bandwidth
     super(eventcontroller)
     @bandwidth=bandwidth
-    @owner=owner
     @macAddress=@@macFactory.getAddress
   end
 

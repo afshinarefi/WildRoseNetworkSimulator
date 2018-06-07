@@ -23,7 +23,6 @@ class EventController
       item=@events.take(1)
       @events.subtract item
       time, id=item[0]
-
       @currentTime=time
       @mods[id].notify
     end

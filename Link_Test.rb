@@ -6,8 +6,8 @@ require_relative 'EventController'
 packet={dataSize: 2000}
 
 eventController=EventController.new
-port1=Port.new eventController, 1024, nil
-port2=Port.new eventController, 1024, nil
+port1=Port.new eventController, 1024
+port2=Port.new eventController, 1024
 dummySender=DummyModule.new eventController
 dummyReceiver=DummyModule.new eventController
 link=Link.new eventController, 0

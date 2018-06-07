@@ -17,7 +17,7 @@ class MAC < Address
     for i in 5.downto(0)
       bytes << (0xFF & (number >> 8*i))
     end
-    "%2X:%2X:%2X:%2X:%2X:%2X" % bytes
+    "%02X:%02X:%02X:%02X:%02X:%02X" % bytes
   end
 
 end

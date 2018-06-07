@@ -7,17 +7,19 @@
 require_relative 'Module'
 
 class Switch < Module
-  
-  @addressResolutionTable={}
-  @ioNames={}
 
   def initialize eventController
     super(eventController)
+    @addressResolutionTable={}
+    @ioNames={}
   end
 
   def addPort name, speed
-    ioNumber=addIO Port.new speed, self
+    port=Port.new @eventController, speed
+    ioNumber=addIO port
     @ioNames[name]=ioNumber
+    port.connectStatic self
+    return port
   end
 
   def getPort index
@@ -25,11 +27,11 @@ class Switch < Module
   end
 
   def process packet, ioNumber
-    @addressResolutionTable[packet[:source]]=ioNumber
-    if @addressResolutionTable.has_key? packet[:destination]
-      buffers[@addressResolutionTable[packet[:destination]]].push packet
+    @addressResolutionTable[packet[:sourceMAC]]=ioNumber
+    if @addressResolutionTable.has_key? packet[:destinationMAC]
+      @buffers[@addressResolutionTable[packet[:destinationMAC]]].push packet
     else
-      for buffer in buffers
+      for buffer in @buffers
         buffer.push packet
       end
     end
