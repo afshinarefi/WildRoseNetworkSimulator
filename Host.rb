@@ -26,10 +26,16 @@ class Host < Module
   end
 
   def process packet, ioNumber
+    if ioNumber==0
+      @eventController.log "%s%d | %s" % [self.class.name[0], @id, packet]
+    end
     if packet.sections[:relay].has_key? getNetworkInterfaceCards[0].getMacAddress
-      for dest in packet.sections[:relay][getNetworkInterfaceCards[0].getMacAddress]
-        packet.sections[:destinationMAC]=dest
-        @buffers[0].push packet
+      relays=packet.sections[:relay][getNetworkInterfaceCards[0].getMacAddress]
+      packet.sections[:relay].delete(getNetworkInterfaceCards[0].getMacAddress)
+      for dest in relays
+        p=packet.copy
+        p.sections[:destinationMAC]=dest
+        @buffers[0].push p
       end
     end
     @eventController.newEvent self, @eventController.now

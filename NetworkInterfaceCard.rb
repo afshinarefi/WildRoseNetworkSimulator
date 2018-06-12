@@ -12,7 +12,9 @@ class NetworkInterfaceCard < PipeModule
       packet.sections[:sourceMAC]=getMacAddress
       @buffers[1].push packet
     else
-      @buffers[0].push packet
+      if packet.sections[:destinationMAC]==getMacAddress
+        @buffers[0].push packet
+      end
     end
     @eventController.newEvent self, @eventController.now
   end

@@ -10,6 +10,10 @@ class EventController
     @logger=Logger.new
   end
 
+  def resetCurrentTime
+    @currentTime=0
+  end
+
   def log message
     @logger.log now, message
   end
